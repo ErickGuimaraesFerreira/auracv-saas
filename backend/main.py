@@ -45,6 +45,11 @@ def on_startup():
     """Executado na inicialização da API. Cria as tabelas do banco de dados."""
     init_db()
 
+@app.get("/")
+def read_root():
+    """Rota raiz para teste de saúde (health check) do Render."""
+    return {"status": "healthy", "service": "Resume AI Screener API"}
+
 # --- ROTAS DE VAGAS ---
 
 @app.post("/api/vagas", response_model=VagaRead, status_code=status.HTTP_201_CREATED)
