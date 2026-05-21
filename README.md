@@ -19,13 +19,7 @@ Sistema moderno de recrutamento (ATS) que automatiza a triagem e o ranqueamento 
 
 ## ⚙️ Como Executar Localmente
 
-**1. Clone o repositório:**
-```bash
-git clone https://github.com/ErickGuimaraesFerreira/auracv-saas.git
-cd auracv-saas
-```
-
-**2. Suba o ambiente via Docker Compose:**
+**1. Suba o ambiente via Docker Compose:**
 ```bash
 docker-compose up --build
 ```
