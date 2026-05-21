@@ -1,0 +1,70 @@
+================================================================================
+LAURA FONSECA - ENGENHEIRA BACKEND SENIOR
+================================================================================
+Contato: laura.fonseca100@email.com | (11) 90000-0100
+LinkedIn: linkedin.com/in/laurafonseca100
+Endereço: São Paulo - SP
+Nacionalidade: Brasileira
+
+--------------------------------------------------------------------------------
+RESUMO PROFISSIONAL
+--------------------------------------------------------------------------------
+Engenheira de software sênior com mais de 8 anos de experiência sólida em arquitetura,
+desenvolvimento e escala de serviços backend complexos. Especialista em ecossistema
+Python, com histórico comprovado na criação de APIs RESTful resilientes, alta
+disponibilidade e design orientado a domínio (DDD). Histórico consistente na
+migração de arquiteturas monolíticas para microsserviços containerizados e na
+implementação de pipelines de infraestrutura ágeis baseados em nuvem.
+
+--------------------------------------------------------------------------------
+EXPERIÊNCIA PROFISSIONAL
+--------------------------------------------------------------------------------
+Mercado Livre | São Paulo, SP
+Posição: Engenheira de Software Sênior
+Período: Agosto/2022 - Atual
+- Liderança técnica no redesenho das APIs internas de processamento de pedidos.
+- Desenvolvimento e implementação de serviços de alta performance em Python usando
+  o framework FastAPI, reduzindo a latência média de resposta em 35%.
+- Modelagem e otimização avançada de consultas em bancos de dados relacionais SQL
+  (PostgreSQL), lidando com milhões de transações diárias concorrentes.
+- Definição das diretrizes de controle de versão e fluxo de trabalho Git (GitFlow)
+  para um time ágil de 12 engenheiros.
+
+Raízen | Campinas, SP
+Posição: Especialista em Desenvolvimento Backend Python
+Período: Março/2019 - Julho/2022
+- Desenvolvimento de sistemas inteligentes de rastreamento de logística de biomassa,
+  utilizando rotinas backend em Python de alto desempenho.
+- Criação, teste e documentação de APIs integradas de ponta a ponta com FastAPI.
+- Gestão e conteinerização completa da infraestrutura de aplicações rodando em
+  containers Docker no ecossistema de produção.
+- Migração bem-sucedida de microsserviços legados para a nuvem AWS utilizando
+  Amazon ECS, AWS Lambda, buckets S3 e RDS (PostgreSQL).
+- Implementação de monitoramento de performance de banco de dados SQL.
+
+TechLogix Solutions | São Paulo, SP
+Posição: Desenvolvedora Backend Pleno
+Período: Janeiro/2016 - Fevereiro/2019
+- Atuação na sustentação e criação de novas features em sistemas corporativos baseados
+  em Python e SQL Server.
+- Configuração de pipelines básicos de CI/CD para automatizar testes unitários.
+- Integração de sistemas de pagamentos de terceiros usando APIs de parceiros.
+
+--------------------------------------------------------------------------------
+FORMAÇÃO ACADÊMICA
+--------------------------------------------------------------------------------
+- MBA em Arquitetura de Software e Cloud Computing
+  FIAP | Concluído em 2021
+- Bacharelado em Engenharia de Computação
+  Universidade de São Paulo (USP) | Concluído em 2015
+
+--------------------------------------------------------------------------------
+HABILIDADES TÉCNICAS E CERTIFICAÇÕES
+--------------------------------------------------------------------------------
+- Linguagens: Python, SQL (PostgreSQL, SQL Server, MySQL), Bash.
+- Frameworks & Libs: FastAPI, Flask, Pydantic, SQLAlchemy.
+- Infraestrutura & DevOps: Docker, AWS (ECS, RDS, S3, IAM, CloudWatch, Lambda), Git.
+- Metodologias: Scrum, Kanban, Domain-Driven Design (DDD), CI/CD.
+- Certificações: AWS Certified Solutions Architect (Associate).
+- Idiomas: Português (Nativo), Inglês (Fluente/Avançado).
+================================================================================

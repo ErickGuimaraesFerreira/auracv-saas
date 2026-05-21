@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: auracv_backend
+    ports:
+      - "8080:8000"
+    volumes:
+      # Mantém os arquivos de currículo enviados persistentes
+      - ./backend/uploads:/app/uploads
+      # Mantém o banco de dados SQLite persistente localmente
+      - ./backend/cv_ranking.db:/app/cv_ranking.db
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: auracv_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped

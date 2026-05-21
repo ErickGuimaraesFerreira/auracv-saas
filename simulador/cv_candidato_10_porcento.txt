@@ -1,0 +1,58 @@
+================================================================================
+CAMILA SANTOS - SENIOR UI/UX & PRODUCT DESIGNER
+================================================================================
+Contato: camila.santos10@email.com | (11) 90000-0010
+LinkedIn: linkedin.com/in/camilasantos10
+Portfólio: behance.net/camilasantosdesign
+Endereço: São Paulo - SP
+Nacionalidade: Brasileira
+
+--------------------------------------------------------------------------------
+RESUMO PROFISSIONAL
+--------------------------------------------------------------------------------
+Designer de Produto (UI/UX) com mais de 7 anos de experiência no mercado digital.
+Especialista em mapeamento de jornada do usuário, arquitetura de informação, criação
+de sistemas visuais (Design Systems), wireframing de alta fidelidade e realização de
+pesquisas quantitativas e qualitativas com usuários (User Research). Foco voltado para
+converter necessidades complexas de negócio em fluxos de telas simplificados, elegantes e
+extremamente responsivos para web e mobile.
+
+--------------------------------------------------------------------------------
+EXPERIÊNCIA PROFISSIONAL
+--------------------------------------------------------------------------------
+Agência Digital RedVibe | São Paulo, SP
+Posição: Senior Product Designer / UI/UX
+Período: Abril/2021 - Atual
+- Liderança de ponta a ponta em projetos de reformulação de portais corporativos e
+  aplicativos de fintechs nacionais.
+- Elaboração e manutenção do Design System corporativo unificado usando o Figma,
+  garantindo consistência visual e velocidade de desenvolvimento para os times de front-end.
+- Planejamento e moderação de testes de usabilidade semanais com usuários finais, 
+  colhendo insights acionáveis que aumentaram as taxas de conversão mobile em 22%.
+- Colaboração diária com desenvolvedores web, auxiliando na inspeção visual HTML e CSS.
+
+Studio criativo PixelArt | Campinas, SP
+Posição: UI Designer & Designer Gráfico
+Período: Fevereiro/2018 - Março/2021
+- Criação de peças de branding, identidades visuais de marcas e layouts conceituais
+  para websites de e-commerce e portfólios institucionais.
+- Criação de mockups interativos de interfaces digitais utilizando Adobe XD e Photoshop.
+- Adaptação de layouts responsivos (mobile-first) e exportação de ativos gráficos (SVG, PNG).
+
+--------------------------------------------------------------------------------
+FORMAÇÃO ACADÊMICA
+--------------------------------------------------------------------------------
+- Especialização em UX Research & Strategy
+  Interaction Design Foundation (IxDF) | Concluído em 2020
+- Bacharelado em Design Gráfico e Comunicação Visual
+  Belas Artes de São Paulo | Concluído em 2017
+
+--------------------------------------------------------------------------------
+HABILIDADES TÉCNICAS E PORTFÓLIO DE FERRAMENTAS
+--------------------------------------------------------------------------------
+- Softwares e Ferramentas: Figma, Adobe Photoshop, Adobe Illustrator, Adobe XD, Miro.
+- Habilidades Teóricas: User Research, Arquitetura de Informação, Prototipação, Wireframes,
+  Design Systems, Design de Interfaces Web/Mobile, Design Emocional.
+- Noções de Código: Inspeção de código HTML5 e CSS3 para alinhamento.
+- Idiomas: Português (Nativo), Inglês (Fluente).
+================================================================================

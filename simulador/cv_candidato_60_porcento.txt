@@ -1,0 +1,53 @@
+================================================================================
+RODRIGO OLIVEIRA - DESENVOLVEDOR WORDPRESS & ANALISTA DE SEO
+================================================================================
+Contato: rodrigo.oliveira60@email.com | (11) 90000-0060
+LinkedIn: linkedin.com/in/rodrigooliveira60
+Endereço: Guarulhos - SP
+Nacionalidade: Brasileira
+
+--------------------------------------------------------------------------------
+RESUMO PROFISSIONAL
+--------------------------------------------------------------------------------
+Profissional de Marketing Digital e Desenvolvimento Web com 4 anos de experiência
+em otimização de motores de busca (SEO), criação de páginas e blogs em WordPress e
+análise de performance digital. Possuo conhecimento prático de programação em Python
+para automação de relatórios e rotinas de raspagem de dados. Forte familiaridade com a
+linguagem SQL para extração de métricas de conversão em bancos de dados relacionais e
+uso de Git para controle de versão em projetos de front-end corporativos.
+
+--------------------------------------------------------------------------------
+EXPERIÊNCIA PROFISSIONAL
+--------------------------------------------------------------------------------
+Agência Growth Boost | São Paulo, SP
+Posição: Analista de SEO & Webmaster
+Período: Março/2023 - Atual
+- Otimização técnica (SEO On-Page e Off-Page) de 15 portais corporativos em WordPress.
+- Escrita e execução periódica de scripts em Python para automação de auditorias de SEO
+  e monitoramento de links quebrados.
+- Criação de queries SQL básicas para extração e agrupamento de leads em bancos de dados
+  PostgreSQL internos.
+- Versionamento e deploy colaborativo de temas e plugins customizados de WordPress usando Git.
+- Análise e acompanhamento diário de tráfego orgânico via Google Analytics 4 e SEMrush.
+
+ClickVendas Marketing | Guarulhos, SP
+Posição: Desenvolvedor Front-end & WordPress Junior
+Período: Junho/2021 - Fevereiro/2023
+- Desenvolvimento de landing pages responsivas utilizando HTML, CSS, JavaScript e Elementor.
+- Auxílio técnico em campanhas de e-mail marketing e integrações de formulários de captura.
+- Uso de Git para versionamento individual e envio de códigos em ambiente de testes.
+
+--------------------------------------------------------------------------------
+FORMAÇÃO ACADÊMICA
+--------------------------------------------------------------------------------
+- Graduação em Marketing e Comunicação Digital
+  Universidade Metodista | Concluído em 2022
+
+--------------------------------------------------------------------------------
+HABILIDADES E COMPETÊNCIAS
+--------------------------------------------------------------------------------
+- Marketing & Web: SEO, Otimização WordPress, Elementor, Copywriting, Google Analytics 4.
+- Tecnologia & Dados: Python (Automação/Scraping), SQL (PostgreSQL, MySQL básico), Git.
+- Noções de Web Design: Adobe Photoshop, Canva, HTML5, CSS3, JavaScript.
+- Idiomas: Português (Nativo), Inglês (Intermediário).
+================================================================================

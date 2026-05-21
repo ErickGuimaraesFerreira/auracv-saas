@@ -1,0 +1,50 @@
+# ----------------------------------------------------------------------------
+# ARQUIVO DE SEGURANÇA E HIGIENE DEVSECOPS (.gitignore)
+# ----------------------------------------------------------------------------
+
+# 1. Chaves, Segredos e Configurações Locais (CRÍTICO)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 2. Dados Locais e Uploads (LGPD e Segurança)
+backend/cv_ranking.db
+backend/uploads/
+*.sqlite3
+*.db
+
+# 3. Ambientes Virtuais e Dependências (Python)
+backend/.venv/
+backend/venv/
+backend/env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# 4. Dependências Frontend (Node/React)
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 5. Logs e Arquivos Temporários
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+coverage/
+
+# 6. Imagens/Mídias soltas geradas na raiz que não são do projeto
+*.jpeg
+*.jpg
+*.png
+!frontend/public/*.png
+!frontend/public/*.jpg
+!frontend/src/assets/*

@@ -1,0 +1,330 @@
+# Guia Avançado de Integração e Configuração: Supabase 🚀
+
+Este documento serve como um guia técnico de engenharia para expandir a infraestrutura atual do projeto **Nodfy - Triagem de CVs**, detalhando as configurações extras e de nível de produção que podem ser aplicadas utilizando a suíte de ferramentas do **Supabase**.
+
+---
+
+## 📌 Sumário
+1. [Migração de Banco de Dados: SQLite para Supabase Postgres](#1-migração-de-banco-de-dados-sqlite-para-supabase-postgres)
+2. [Armazenamento de Arquivos: Supabase Storage para Currículos](#2-armazenamento-de-arquivos-supabase-storage-para-currículos)
+3. [Blindagem de API: Validação de JWT Supabase no FastAPI](#3-blindagem-de-api-validação-de-jwt-supabase-no-fastapi)
+4. [Segurança a Nível de Linha (RLS - Row Level Security)](#4-segurança-a-nível-de-linha-rls---row-level-security)
+5. [Sincronização em Tempo Real (Supabase Realtime)](#5-sincronização-em-tempo-real-supabase-realtime)
+6. [Autenticação Social (OAuth 2.0 - Google e Microsoft)](#6-autenticação-social-oauth-20---google-e-microsoft)
+
+---
+
+## 1. Migração de Banco de Dados: SQLite para Supabase Postgres
+
+Atualmente, o backend FastAPI utiliza o **SQLite** para persistência rápida em desenvolvimento local. Para produção (Render/Supabase), o ideal é utilizar o banco de dados **PostgreSQL totalmente gerenciado do Supabase**.
+
+### 🛠️ Passos para Configuração:
+
+1. **Obter a String de Conexão no Supabase:**
+   - Acesse o painel do Supabase -> **Project Settings** -> **Database**.
+   - Copie a URI de conexão (recomenda-se a porta `6543` para Connection Pooling via Transaction mode).
+   - Exemplo de URI: `postgresql://postgres:[YOUR-PASSWORD]@aws-0-sa-east-1.pooler.supabase.com:6543/postgres`
+
+2. **Instalar Dependências de PostgreSQL no Backend:**
+   Adicione o driver de Postgres ao `backend/requirements.txt`:
+   ```txt
+   psycopg2-binary>=2.9.0
+   ```
+
+3. **Modificar `backend/database.py`:**
+   Configure a URL dinamicamente via variável de ambiente, mantendo o fallback para SQLite local:
+
+   ```python
+   import os
+   from sqlmodel import SQLModel, create_engine, Session
+
+   DATABASE_URL = os.getenv("DATABASE_URL")
+   
+   if not DATABASE_URL:
+       # Fallback para SQLite em ambiente de teste local
+       DATABASE_DIR = os.path.dirname(os.path.abspath(__file__))
+       DATABASE_PATH = os.path.join(DATABASE_DIR, "cv_ranking.db")
+       DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
+       connect_args = {"check_same_thread": False}
+   else:
+       # Configuração para PostgreSQL (Supabase)
+       # Ajuste para garantir suporte ao Dialeto do SQLAlchemy se necessário
+       if DATABASE_URL.startswith("postgres://"):
+           DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+       connect_args = {}
+
+   engine = create_engine(DATABASE_URL, connect_args=connect_args)
+
+   def init_db():
+       SQLModel.metadata.create_all(engine)
+
+   def get_session():
+       with Session(engine) as session:
+           yield session
+   ```
+
+---
+
+## 2. Armazenamento de Arquivos: Supabase Storage para Currículos
+
+Em vez de salvar os PDFs/DOCXs dos candidatos na pasta local `/uploads` do servidor (que é volátil em plataformas como o Render.com), deve-se usar o **Supabase Storage**. Isso garante CDN global, RLS para arquivos e URLs assinadas com tempo de expiração.
+
+### 🛠️ Configuração no Painel do Supabase:
+1. Vá em **Storage** no menu lateral.
+2. Clique em **New Bucket**.
+3. Crie um bucket chamado `curriculos`.
+4. Marque como **Private** (assim, apenas usuários autenticados ou por URL assinada poderão acessar o currículo, protegendo dados sensíveis de acordo com a LGPD).
+
+### 🛠️ Integração no Frontend (Upload Direto e Envio do Metadado):
+Recomenda-se fazer o upload direto do frontend para o Storage (poupando largura de banda do backend) e depois enviar apenas o metadado (o caminho do arquivo) para a API.
+
+```javascript
+import { supabase } from './supabaseClient';
+
+async function handleCVUpload(file, vagaId) {
+  const fileExt = file.name.split('.').pop();
+  const fileName = `${crypto.randomUUID()}.${fileExt}`;
+  const filePath = `${vagaId}/${fileName}`;
+
+  // 1. Upload do PDF para o Storage privado do Supabase
+  const { data, error } = await supabase.storage
+    .from('curriculos')
+    .upload(filePath, file);
+
+  if (error) {
+    throw new Error('Falha no upload do arquivo: ' + error.message);
+  }
+
+  // O caminho do arquivo gravado no banco de dados será "curriculos/vagaId/uuid.pdf"
+  return data.path;
+}
+```
+
+### 🛠️ Visualização Segura no Painel do RH (Gerando URL Assinada):
+Como o bucket é privado, links normais não abrem os PDFs. Você deve gerar um link temporário assinado de 1 hora para o recrutador ler o currículo:
+
+```javascript
+async function getSecureDownloadUrl(filePath) {
+  const { data, error } = await supabase.storage
+    .from('curriculos')
+    .createSignedUrl(filePath, 3600); // Válido por 3600 segundos (1 hora)
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
+  return data.signedUrl;
+}
+```
+
+---
+
+## 3. Blindagem de API: Validação de JWT Supabase no FastAPI
+
+Conforme mapeado na **Fase 7 - Passo 4** do Planejamento, o backend FastAPI precisa blindar seus endpoints privados. O Supabase Auth emite tokens JWT assinados. O backend pode decodificar e validar o token JWT diretamente usando a chave pública do Supabase ou utilizando a biblioteca oficial do Supabase em Python.
+
+### 🛠️ Implementação da Dependência de Autenticação no FastAPI (`backend/auth.py`):
+
+1. Instale `python-jose`:
+   ```bash
+   pip install python-jose[cryptography]
+   ```
+
+2. Crie o utilitário de segurança:
+
+   ```python
+   import os
+   from fastapi import Depends, HTTPException, status
+   from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+   from jose import jwt, JWTError
+
+   security = HTTPBearer()
+
+   # O Supabase JWT Secret é fornecido em Project Settings -> API -> JWT Secret
+   SUPABASE_JWT_SECRET = os.getenv("SUPABASE_JWT_SECRET") 
+   JWT_ALGORITHM = "HS256"
+
+   def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
+       """
+       Valida o token JWT emitido pelo Supabase e injeta os dados do usuário.
+       """
+       token = credentials.credentials
+       if not SUPABASE_JWT_SECRET:
+           raise HTTPException(
+               status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+               detail="JWT Secret do Supabase não configurado no backend."
+           )
+           
+       try:
+           # Decodifica e valida assinatura e expiração do JWT emitido pelo Supabase Auth
+           payload = jwt.decode(token, SUPABASE_JWT_SECRET, algorithms=[JWT_ALGORITHM], audience="authenticated")
+           user_id: str = payload.get("sub")
+           email: str = payload.get("email")
+           
+           if user_id is None:
+               raise HTTPException(
+                   status_code=status.HTTP_401_UNAUTHORIZED,
+                   detail="Token inválido: identificador do usuário ausente."
+               )
+               
+           return {"id": user_id, "email": email, "payload": payload}
+           
+       except JWTError as e:
+           raise HTTPException(
+               status_code=status.HTTP_401_UNAUTHORIZED,
+               detail=f"Token inválido ou expirado: {str(e)}"
+           )
+   ```
+
+3. **Uso no endpoint privado no `backend/main.py`:**
+
+   ```python
+   from auth import get_current_user
+
+   @app.post("/api/vagas", response_model=VagaRead, status_code=status.HTTP_201_CREATED)
+   def create_vaga(
+       vaga: VagaCreate, 
+       session: Session = Depends(get_session),
+       current_user: dict = Depends(get_current_user) # Endpoint protegido!
+   ):
+       # Somente requisições autenticadas do RH chegam aqui
+       db_vaga = Vaga.from_orm(vaga)
+       session.add(db_vaga)
+       session.commit()
+       ...
+   ```
+
+---
+
+## 4. Segurança a Nível de Linha (RLS - Row Level Security)
+
+Se optarmos por realizar consultas de banco diretamente do Frontend em cenários futuros ou garantir segurança rigorosa em nível de infraestrutura PostgreSQL, devemos habilitar as **RLS Policies** no Supabase.
+
+### 🛠️ Regra: Candidatos vs Recrutadores
+Apenas usuários do RH (com papel `authenticated` ou pertencentes a um grupo específico) podem ver análises e criar vagas. Candidatos públicos só podem submeter dados para vagas existentes.
+
+Execute o seguinte SQL no painel de **SQL Editor** do Supabase para habilitar e configurar RLS:
+
+```sql
+-- 1. Habilita RLS para as tabelas
+ALTER TABLE public.vaga ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.analisecv ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.candidato ENABLE ROW LEVEL SECURITY;
+
+-- 2. Políticas para a tabela Vagas
+-- Permite leitura pública (para o portal de vagas Nodfy Carreiras)
+CREATE POLICY "Qualquer pessoa pode listar vagas" 
+ON public.vaga FOR SELECT 
+USING (true);
+
+-- Apenas recrutadores autenticados podem inserir/deletar/atualizar vagas
+CREATE POLICY "Apenas RH autenticado pode gerenciar vagas" 
+ON public.vaga FOR ALL 
+TO authenticated 
+USING (auth.role() = 'authenticated');
+
+-- 3. Políticas para AnaliseCV (currículos e scores)
+-- Apenas usuários autenticados do RH podem ler currículos e scores triados
+CREATE POLICY "Apenas RH autenticado pode ver analise de currículos" 
+ON public.analisecv FOR SELECT 
+TO authenticated 
+USING (auth.role() = 'authenticated');
+
+-- Candidatos ou portais ATS podem inserir novos currículos
+CREATE POLICY "Candidatos e portais podem submeter currículos para triagem" 
+ON public.analisecv FOR INSERT 
+WITH CHECK (true);
+```
+
+---
+
+## 5. Sincronização em Tempo Real (Supabase Realtime)
+
+Quando o candidato submete um currículo, a IA do Gemini leva de 3 a 7 segundos para extrair o texto, estruturar e ranquear as notas. Em vez de forçar o usuário a dar F5 ou o frontend fazer *polling* exaustivo na API, podemos escutar mudanças no banco via **WebSockets (Supabase Realtime)**.
+
+### 🛠️ Como Habilitar:
+1. No painel do Supabase, acesse **Database** -> **Replication**.
+2. Na linha da tabela `analisecv`, ative a chave do **Realtime** para escutar eventos de inserção e atualização.
+
+### 🛠️ Implementação no Frontend (React):
+Assine o canal de notificações em tempo real na tela do Dashboard de Ranqueamento de Currículos:
+
+```javascript
+import React, { useEffect, useState } from 'react';
+import { supabase } from './supabaseClient';
+
+export default function RankingDashboard({ vagaId }) {
+  const [ranking, setRanking] = useState([]);
+
+  useEffect(() => {
+    // 1. Carrega o ranking inicial
+    fetchRankingInicial(vagaId);
+
+    // 2. Escuta novas análises ou atualizações de score em tempo real
+    const channel = supabase
+      .channel(`realtime-vaga-${vagaId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*', // Escuta INSERT, UPDATE, DELETE
+          schema: 'public',
+          table: 'analisecv',
+          filter: `vaga_id=eq.${vagaId}`
+        },
+        (payload) => {
+          console.log('Mudança no banco detectada em tempo real:', payload);
+          // Recarrega o ranking ordenado dinamicamente ao receber novas atualizações
+          fetchRankingInicial(vagaId);
+        }
+      )
+      .subscribe();
+
+    // Limpa a inscrição de WebSocket ao desmontar o componente
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [vagaId]);
+
+  ...
+}
+```
+
+---
+
+## 6. Autenticação Social (OAuth 2.0 - Google e Microsoft)
+
+Como a ferramenta **Nodfy** é corporativa, o time de Recursos Humanos do RH pode preferir fazer login com suas credenciais do **Google Workspace** ou **Microsoft Azure Active Directory (Office 365)**.
+
+### 🛠️ Como Configurar:
+1. **No Google Cloud Console / Azure Portal:**
+   - Crie credenciais do tipo **ID do cliente OAuth 2.0**.
+   - Configure a URL de redirecionamento autorizada obtida no Supabase:
+     `https://[SEU-ID-PROJETO].supabase.co/auth/v1/callback`
+2. **No Painel do Supabase:**
+   - Acesse **Auth** -> **Providers** -> **Google / Azure**.
+   - Cole o `Client ID` e o `Client Secret` fornecidos pelos provedores.
+   - Ative o provedor.
+
+### 🛠️ Implementação no Botão de Login (React):
+Adicione um botão moderno de login único (Single Sign-On) no componente `Login.jsx`:
+
+```javascript
+const handleSocialLogin = async (provider) => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: provider, // 'google' ou 'azure'
+    options: {
+      redirectTo: window.location.origin // Redireciona de volta para a SPA logada
+    }
+  });
+
+  if (error) {
+    console.error('Erro no login OAuth:', error.message);
+  }
+};
+```
+
+---
+
+> [!NOTE]
+> **Recomendação de Próximo Passo:**
+> A configuração de maior prioridade e valor imediato para o seu roadmap atual é a **Migração de Banco de Dados (SQLite para Supabase Postgres)** combinada com a **Blindagem de API no FastAPI (Validação de JWT)**. Isso removerá os arquivos `.db` locais voláteis e garantirá que sua API de IA esteja segura contra requisições fraudulentas.

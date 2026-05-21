@@ -1,0 +1,53 @@
+================================================================================
+PEDRO ALMEIDA - ENGENHEIRO BACKEND PLENO
+================================================================================
+Contato: pedro.almeida90@email.com | (11) 90000-0090
+LinkedIn: linkedin.com/in/pedroalmeida90
+Endereço: Sorocaba - SP
+Nacionalidade: Brasileira
+
+--------------------------------------------------------------------------------
+RESUMO PROFISSIONAL
+--------------------------------------------------------------------------------
+Engenheiro de Software Pleno com 4 anos de atuação no desenvolvimento de sistemas web
+robustos e escaláveis. Especializado em construir aplicações de microsserviços eficientes
+utilizando Python como linguagem primária e FastAPI para estruturação de APIs ágeis.
+Forte experiência com modelagem de bancos de dados relacionais e controle de fluxo
+usando Git. Prática diária no empacotamento de serviços com Docker para ambientes
+locais de desenvolvimento e teste.
+
+--------------------------------------------------------------------------------
+EXPERIÊNCIA PROFISSIONAL
+--------------------------------------------------------------------------------
+SoftExpert Tech | São Paulo, SP
+Posição: Desenvolvedor Backend Python Pleno
+Período: Março/2021 - Atual
+- Desenvolvimento ativo de rotas de integração e regras de negócio complexas de
+  comércio eletrônico utilizando Python, FastAPI e validações com Pydantic.
+- Escrita de queries SQL otimizadas para manipulação e junção de grandes volumes de
+  dados estruturados em bancos de dados relacionais MySQL.
+- Criação e orquestração de imagens e containers locais utilizando Docker e Docker Compose,
+  agilizando o onboarding de novos desenvolvedores no projeto.
+- Versionamento e controle de revisões da base de código usando Git e GitLab, atuando
+  com code reviews recorrentes com o restante do time técnico.
+
+Alpha Web Apps | Sorocaba, SP
+Posição: Desenvolvedor Web Backend Junior
+Período: Janeiro/2020 - Fevereiro/2021
+- Criação de scripts em Python para raspagem de dados (Web Scraping) de plataformas públicas.
+- Suporte na manutenção de APIs REST baseadas em Flask e integração com SQL Postgres.
+- Execução de testes de integração ponta a ponta e correção de bugs na lógica de microsserviços.
+
+--------------------------------------------------------------------------------
+FORMAÇÃO ACADÊMICA
+--------------------------------------------------------------------------------
+- Bacharelado em Sistemas de Informação
+  Faculdade de Tecnologia de Sorocaba | Concluído em 2020
+
+--------------------------------------------------------------------------------
+HABILIDADES TÉCNICAS E FERRAMENTAS
+--------------------------------------------------------------------------------
+- Linguagens: Python, SQL (MySQL, PostgreSQL), HTML, CSS.
+- Frameworks & Ferramentas: FastAPI, Flask, Pydantic, SQLAlchemy, Git, Docker, Gitlab.
+- Idiomas: Português (Nativo), Inglês (Intermediário).
+================================================================================
