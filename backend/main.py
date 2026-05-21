@@ -17,6 +17,17 @@ from models import (
 from parser import parse_resume
 from ai_service import analyze_resume_with_gemini
 
+def safe_load_json(val):
+    """Lê um valor JSON de forma segura, suportando tanto string quanto objeto nativo list/dict."""
+    if isinstance(val, (list, dict)):
+        return val
+    if isinstance(val, str):
+        try:
+            return json.loads(val)
+        except Exception:
+            return []
+    return []
+
 app = FastAPI(
     title="Resume AI Screener & Ranker API",
     description="API de triagem automatizada de currículos integrada com Gemini AI",
@@ -242,11 +253,11 @@ def get_vaga_ranking(vaga_id: int, session: Session = Depends(get_session)):
                 candidato_telefone=c.telefone,
                 candidato_linkedin=c.linkedin_url,
                 score_geral=a.score_geral,
-                habilidades_encontradas=json.loads(a.habilidades_encontradas),
-                habilidades_faltantes=json.loads(a.habilidades_faltantes),
+                habilidades_encontradas=safe_load_json(a.habilidades_encontradas),
+                habilidades_faltantes=safe_load_json(a.habilidades_faltantes),
                 justificativa_fit=a.justificativa_fit,
-                pontos_fortes=json.loads(a.pontos_fortes),
-                pontos_atencao=json.loads(a.pontos_atencao),
+                pontos_fortes=safe_load_json(a.pontos_fortes),
+                pontos_atencao=safe_load_json(a.pontos_atencao),
                 resumo_experiencia=a.resumo_experiencia,
                 status=a.status,
                 data_analise=a.data_analise,
